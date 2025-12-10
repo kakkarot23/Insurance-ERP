@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}Fraud Detection - Insurance ERP{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-8">
+        <h2>Fraud Detection</h2>
+    </div>
+    <div class="col-md-4 text-end">
+        <a href="{% url 'fraud:create' %}" class="btn btn-primary">Flag Fraud Risk</a>
+    </div>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-striped table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>Policy</th>
+                <th>Risk Score</th>
+                <th>Risk Level</th>
+                <th>Status</th>
+                <th>Created</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for risk in fraud_risks %}
+            <tr>
+                <td><strong>{{ risk.policy.policy_number }}</strong></td>
+                <td>{{ risk.risk_score }}</td>
+                <td>
+                    <span class="badge bg-{% if risk.risk_level == 'CRITICAL' %}danger{% elif risk.risk_level == 'HIGH' %}warning{% elif risk.risk_level == 'MEDIUM' %}info{% else %}success{% endif %}">
+                        {{ risk.risk_level }}
+                    </span>
+                </td>
+                <td>{{ risk.status }}</td>
+                <td>{{ risk.created_at|date:"d M Y" }}</td>
+                <td>
+                    <a href="{% url 'fraud:detail' risk.id %}" class="btn btn-sm btn-info">View</a>
+                    <a href="{% url 'fraud:investigate' risk.id %}" class="btn btn-sm btn-danger">Investigate</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" class="text-center text-muted">No fraud risks found</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

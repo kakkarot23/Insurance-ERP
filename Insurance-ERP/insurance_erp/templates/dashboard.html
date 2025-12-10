@@ -1,0 +1,492 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Insurance ERP Dashboard - Welcome{% endblock %}
+
+{% block content %}
+<style>
+    .dashboard-container {
+        padding: 40px 0;
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        min-height: calc(100vh - 80px);
+    }
+
+    .hero-section {
+        text-align: center;
+        margin-bottom: 50px;
+        padding: 40px 0;
+    }
+
+    .hero-section h1 {
+        font-size: 48px;
+        font-weight: 700;
+        color: #2c3e50;
+        margin-bottom: 15px;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+    }
+
+    .hero-section p {
+        font-size: 18px;
+        color: #555;
+        margin-bottom: 0;
+        font-weight: 500;
+    }
+
+    .stats-section {
+        margin-bottom: 50px;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+    }
+
+    .stat-card {
+        background: white;
+        padding: 25px;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        transition: all 0.3s ease;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .stat-icon {
+        font-size: 40px;
+        margin-bottom: 10px;
+    }
+
+    .stat-number {
+        font-size: 32px;
+        font-weight: 700;
+        color: #2c3e50;
+        margin-bottom: 5px;
+    }
+
+    .stat-label {
+        font-size: 14px;
+        color: #7f8c8d;
+        font-weight: 600;
+    }
+
+    .modules-section {
+        margin-bottom: 50px;
+    }
+
+    .modules-title {
+        text-align: center;
+        font-size: 32px;
+        font-weight: 700;
+        color: #2c3e50;
+        margin-bottom: 40px;
+    }
+
+    .modules-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 30px;
+    }
+
+    .module-card {
+        background: white;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        cursor: pointer;
+        position: relative;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .module-card:hover {
+        transform: translateY(-10px) scale(1.02);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+    }
+
+    .module-card.module-1 {
+        border-top: 5px solid #3498db;
+    }
+
+    .module-card.module-1 .module-header {
+        background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+    }
+
+    .module-card.module-2 {
+        border-top: 5px solid #27ae60;
+    }
+
+    .module-card.module-2 .module-header {
+        background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
+    }
+
+    .module-card.module-3 {
+        border-top: 5px solid #3498db;
+    }
+
+    .module-card.module-3 .module-header {
+        background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+    }
+
+    .module-card.module-4 {
+        border-top: 5px solid #f39c12;
+    }
+
+    .module-card.module-4 .module-header {
+        background: linear-gradient(135deg, #f39c12 0%, #d68910 100%);
+    }
+
+    .module-card.module-5 {
+        border-top: 5px solid #e74c3c;
+    }
+
+    .module-card.module-5 .module-header {
+        background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+    }
+
+    .module-card.module-6 {
+        border-top: 5px solid #9b59b6;
+    }
+
+    .module-card.module-6 .module-header {
+        background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);
+    }
+
+    .module-header {
+        padding: 30px;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .module-icon {
+        font-size: 48px;
+        margin-bottom: 15px;
+    }
+
+    .module-title {
+        font-size: 22px;
+        font-weight: 700;
+        margin-bottom: 10px;
+    }
+
+    .module-description {
+        font-size: 14px;
+        line-height: 1.6;
+        margin-bottom: 20px;
+        color: #666;
+        flex-grow: 1;
+    }
+
+    .module-body {
+        padding: 25px;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .module-footer {
+        padding: 0 25px 25px;
+        display: flex;
+        gap: 10px;
+    }
+
+    .module-btn {
+        flex: 1;
+        padding: 12px 20px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: 600;
+        text-align: center;
+        transition: all 0.3s ease;
+        font-size: 14px;
+    }
+
+    .module-card.module-1 .module-btn {
+        background: #3498db;
+        color: white;
+    }
+
+    .module-card.module-1 .module-btn:hover {
+        background: #2980b9;
+    }
+
+    .module-card.module-2 .module-btn {
+        background: #27ae60;
+        color: white;
+    }
+
+    .module-card.module-2 .module-btn:hover {
+        background: #229954;
+    }
+
+    .module-card.module-3 .module-btn {
+        background: #3498db;
+        color: white;
+    }
+
+    .module-card.module-3 .module-btn:hover {
+        background: #2980b9;
+    }
+
+    .module-card.module-4 .module-btn {
+        background: #f39c12;
+        color: white;
+    }
+
+    .module-card.module-4 .module-btn:hover {
+        background: #d68910;
+    }
+
+    .module-card.module-5 .module-btn {
+        background: #e74c3c;
+        color: white;
+    }
+
+    .module-card.module-5 .module-btn:hover {
+        background: #c0392b;
+    }
+
+    .module-card.module-6 .module-btn {
+        background: #9b59b6;
+        color: white;
+    }
+
+    .module-card.module-6 .module-btn:hover {
+        background: #8e44ad;
+    }
+
+    .quick-stats {
+        background: white;
+        border-radius: 10px;
+        padding: 30px;
+        margin-bottom: 40px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .quick-stats h3 {
+        color: #2c3e50;
+        margin-bottom: 25px;
+        font-weight: 700;
+    }
+
+    .welcome-message {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 30px;
+        border-radius: 10px;
+        margin-bottom: 40px;
+        text-align: center;
+    }
+
+    .welcome-message h2 {
+        font-size: 28px;
+        margin-bottom: 10px;
+        font-weight: 700;
+    }
+
+    .welcome-message p {
+        font-size: 16px;
+        margin: 0;
+        opacity: 0.95;
+    }
+
+    @media (max-width: 768px) {
+        .hero-section h1 {
+            font-size: 32px;
+        }
+
+        .modules-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .stats-section {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+</style>
+
+<div class="dashboard-container">
+    <div class="container">
+        <!-- Welcome Message -->
+        <div class="welcome-message">
+            <h2>👋 Welcome to Insurance ERP</h2>
+            <p>Your comprehensive enterprise resource planning system for insurance management</p>
+        </div>
+
+        <!-- Hero Section -->
+        <div class="hero-section">
+            <h1>Dashboard</h1>
+            <p>Manage all your insurance operations from one unified platform</p>
+        </div>
+
+        <!-- Stats Section -->
+        <div class="stats-section">
+            <div class="stat-card">
+                <div class="stat-icon">📋</div>
+                <div class="stat-number">6</div>
+                <div class="stat-label">Active Modules</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">✅</div>
+                <div class="stat-number">100%</div>
+                <div class="stat-label">Operational</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🔐</div>
+                <div class="stat-number">Secure</div>
+                <div class="stat-label">Enterprise Grade</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">⚡</div>
+                <div class="stat-number">Fast</div>
+                <div class="stat-label">Real-time Processing</div>
+            </div>
+        </div>
+
+        <!-- Modules Section -->
+        <div class="modules-section">
+            <h2 class="modules-title">📊 Core Modules</h2>
+            
+            <div class="modules-grid">
+                <!-- Module 1: Policy Lifecycle -->
+                <div class="module-card module-1">
+                    <div class="module-header">
+                        <div>
+                            <div class="module-icon">📋</div>
+                            <div class="module-title">Policy Lifecycle</div>
+                        </div>
+                    </div>
+                    <div class="module-body">
+                        <p class="module-description">
+                            Create, manage, renew, and track insurance policies throughout their complete lifecycle from inception to expiration.
+                        </p>
+                    </div>
+                    <div class="module-footer">
+                        <a href="{% url 'policies:list' %}" class="module-btn">📂 View Policies</a>
+                    </div>
+                </div>
+
+                <!-- Module 2: Premium Calculations -->
+                <div class="module-card module-2">
+                    <div class="module-header">
+                        <div>
+                            <div class="module-icon">💰</div>
+                            <div class="module-title">Premium Calculations</div>
+                        </div>
+                    </div>
+                    <div class="module-body">
+                        <p class="module-description">
+                            Calculate premium amounts using risk factors, coverage types, and customer profiles with intelligent algorithms.
+                        </p>
+                    </div>
+                    <div class="module-footer">
+                        <a href="{% url 'policies:premium' %}" class="module-btn">🧮 Calculate</a>
+                    </div>
+                </div>
+
+                <!-- Module 3: KYC Onboarding -->
+                <div class="module-card module-3">
+                    <div class="module-header">
+                        <div>
+                            <div class="module-icon">👤</div>
+                            <div class="module-title">KYC Onboarding</div>
+                        </div>
+                    </div>
+                    <div class="module-body">
+                        <p class="module-description">
+                            Streamlined customer verification, identity validation, and Know Your Customer compliance for all customers.
+                        </p>
+                    </div>
+                    <div class="module-footer">
+                        <a href="{% url 'kyc:list' %}" class="module-btn">✔️ View KYC</a>
+                    </div>
+                </div>
+
+                <!-- Module 4: Claims Processing -->
+                <div class="module-card module-4">
+                    <div class="module-header">
+                        <div>
+                            <div class="module-icon">📑</div>
+                            <div class="module-title">Claims Processing</div>
+                        </div>
+                    </div>
+                    <div class="module-body">
+                        <p class="module-description">
+                            Efficient claim submission, documentation, validation, and settlement tracking with automated workflows.
+                        </p>
+                    </div>
+                    <div class="module-footer">
+                        <a href="{% url 'claims:list' %}" class="module-btn">📋 View Claims</a>
+                    </div>
+                </div>
+
+                <!-- Module 5: Fraud Detection -->
+                <div class="module-card module-5">
+                    <div class="module-header">
+                        <div>
+                            <div class="module-icon">🛡️</div>
+                            <div class="module-title">Fraud Detection</div>
+                        </div>
+                    </div>
+                    <div class="module-body">
+                        <p class="module-description">
+                            Advanced fraud risk assessment, pattern detection, and investigation tools to protect against fraudulent claims.
+                        </p>
+                    </div>
+                    <div class="module-footer">
+                        <a href="{% url 'fraud:list' %}" class="module-btn">🔍 Investigate</a>
+                    </div>
+                </div>
+
+                <!-- Module 6: Commission Module -->
+                <div class="module-card module-6">
+                    <div class="module-header">
+                        <div>
+                            <div class="module-icon">💸</div>
+                            <div class="module-title">Commission Module</div>
+                        </div>
+                    </div>
+                    <div class="module-body">
+                        <p class="module-description">
+                            Manage agent commissions, track performance metrics, and process payments with transparent calculation methods.
+                        </p>
+                    </div>
+                    <div class="module-footer">
+                        <a href="{% url 'commissions:list' %}" class="module-btn">💳 View Commissions</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Add interactive animations
+    document.querySelectorAll('.module-card').forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            this.style.zIndex = '10';
+        });
+        card.addEventListener('mouseleave', function() {
+            this.style.zIndex = '1';
+        });
+    });
+
+    // Animate stats on page load
+    window.addEventListener('load', function() {
+        document.querySelectorAll('.stat-card').forEach((card, index) => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            setTimeout(() => {
+                card.style.transition = 'all 0.5s ease';
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+            }, index * 100);
+        });
+    });
+</script>
+{% endblock %}

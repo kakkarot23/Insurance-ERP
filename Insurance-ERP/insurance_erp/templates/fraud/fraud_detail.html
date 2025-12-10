@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block title %}Fraud Risk - Insurance ERP{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <h2>Fraud Risk Details</h2>
+    </div>
+    <div class="col-md-4 text-end">
+        <a href="{% url 'fraud:list' %}" class="btn btn-secondary">Back</a>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5>Risk Assessment</h5>
+            </div>
+            <div class="card-body">
+                <p><strong>Policy:</strong> {{ fraud_risk.policy.policy_number }}</p>
+                <p><strong>Risk Score:</strong> {{ fraud_risk.risk_score }}/100</p>
+                <p><strong>Risk Level:</strong> 
+                    <span class="badge bg-{% if fraud_risk.risk_level == 'CRITICAL' %}danger{% elif fraud_risk.risk_level == 'HIGH' %}warning{% else %}info{% endif %}">
+                        {{ fraud_risk.risk_level }}
+                    </span>
+                </p>
+                <p><strong>Status:</strong> {{ fraud_risk.status }}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5>Red Flags</h5>
+            </div>
+            <div class="card-body">
+                <ul>
+                    {% if fraud_risk.is_duplicate_claim %}
+                    <li><strong>Duplicate Claim</strong></li>
+                    {% endif %}
+                    {% if fraud_risk.is_over_claim %}
+                    <li><strong>Over Claim</strong></li>
+                    {% endif %}
+                    {% if fraud_risk.is_staged_claim %}
+                    <li><strong>Staged Claim</strong></li>
+                    {% endif %}
+                    {% if fraud_risk.unusual_pattern %}
+                    <li><strong>Unusual Pattern</strong></li>
+                    {% endif %}
+                    {% if fraud_risk.high_claim_frequency %}
+                    <li><strong>High Claim Frequency</strong></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h5>Description</h5>
+            </div>
+            <div class="card-body">
+                <p>{{ fraud_risk.description }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

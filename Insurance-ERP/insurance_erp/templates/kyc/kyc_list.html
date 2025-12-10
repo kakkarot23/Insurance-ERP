@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}KYC Profiles - Insurance ERP{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-8">
+        <h2>KYC Profiles</h2>
+    </div>
+    <div class="col-md-4 text-end">
+        <a href="{% url 'kyc:create' %}" class="btn btn-primary">New KYC Profile</a>
+    </div>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-striped table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Type</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for profile in kyc_profiles %}
+            <tr>
+                <td><strong>{{ profile.full_name }}</strong></td>
+                <td>{{ profile.email }}</td>
+                <td>{{ profile.phone }}</td>
+                <td>{{ profile.get_kyc_type_display }}</td>
+                <td>
+                    <span class="badge bg-{% if profile.status == 'VERIFIED' %}success{% elif profile.status == 'PENDING' %}warning{% elif profile.status == 'REJECTED' %}danger{% else %}info{% endif %}">
+                        {{ profile.status }}
+                    </span>
+                </td>
+                <td>
+                    <a href="{% url 'kyc:detail' profile.id %}" class="btn btn-sm btn-info">View</a>
+                    <a href="{% url 'kyc:verify' profile.id %}" class="btn btn-sm btn-warning">Verify</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" class="text-center text-muted">No profiles found</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

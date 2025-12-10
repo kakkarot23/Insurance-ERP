@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ policy.policy_number }} - Insurance ERP{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <h2>{{ policy.policy_number }}</h2>
+    </div>
+    <div class="col-md-4 text-end">
+        <a href="{% url 'policies:update' policy.id %}" class="btn btn-warning">Edit</a>
+        <a href="{% url 'policies:list' %}" class="btn btn-secondary">Back</a>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5>Policy Details</h5>
+            </div>
+            <div class="card-body">
+                <p><strong>Policy Type:</strong> {{ policy.get_policy_type_display }}</p>
+                <p><strong>Status:</strong> 
+                    <span class="badge bg-{% if policy.status == 'ACTIVE' %}success{% elif policy.status == 'DRAFT' %}info{% else %}danger{% endif %}">
+                        {{ policy.status }}
+                    </span>
+                </p>
+                <p><strong>Start Date:</strong> {{ policy.start_date|date:"d M Y" }}</p>
+                <p><strong>End Date:</strong> {{ policy.end_date|date:"d M Y" }}</p>
+                <p><strong>Premium Amount:</strong> ₹{{ policy.premium_amount }}</p>
+                <p><strong>Sum Insured:</strong> ₹{{ policy.sum_insured }}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5>Holder Details</h5>
+            </div>
+            <div class="card-body">
+                <p><strong>Name:</strong> {{ policy.holder_name }}</p>
+                <p><strong>Email:</strong> {{ policy.holder_email }}</p>
+                <p><strong>Phone:</strong> {{ policy.holder_phone }}</p>
+                <p><strong>Created:</strong> {{ policy.created_at|date:"d M Y H:i" }}</p>
+                <p><strong>Last Updated:</strong> {{ policy.updated_at|date:"d M Y H:i" }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h5>Coverage Details</h5>
+            </div>
+            <div class="card-body">
+                <p>{{ policy.coverage_details }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if policy.premium_calc %}
+<div class="row mt-4">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h5>Premium Calculation</h5>
+            </div>
+            <div class="card-body">
+                <p><strong>Base Premium:</strong> ₹{{ policy.premium_calc.base_premium }}</p>
+                <p><strong>Risk Factor:</strong> {{ policy.premium_calc.risk_factor }}</p>
+                <p><strong>Tax Rate:</strong> {{ policy.premium_calc.tax_rate }}%</p>
+                <p><strong>Discount:</strong> {{ policy.premium_calc.discount_percentage }}%</p>
+                <p><strong>Total Premium:</strong> ₹{{ policy.premium_calc.total_premium }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

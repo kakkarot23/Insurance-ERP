@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ claim.claim_number }} - Insurance ERP{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <h2>{{ claim.claim_number }}</h2>
+    </div>
+    <div class="col-md-4 text-end">
+        <a href="{% url 'claims:list' %}" class="btn btn-secondary">Back</a>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5>Claim Details</h5>
+            </div>
+            <div class="card-body">
+                <p><strong>Policy:</strong> {{ claim.policy.policy_number }}</p>
+                <p><strong>Claim Date:</strong> {{ claim.claim_date|date:"d M Y" }}</p>
+                <p><strong>Incident Date:</strong> {{ claim.incident_date|date:"d M Y" }}</p>
+                <p><strong>Claim Amount:</strong> ₹{{ claim.claim_amount }}</p>
+                <p><strong>Status:</strong> 
+                    <span class="badge bg-{% if claim.status == 'PAID' %}success{% elif claim.status == 'APPROVED' %}info{% else %}warning{% endif %}">
+                        {{ claim.status }}
+                    </span>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5>Approval Details</h5>
+            </div>
+            <div class="card-body">
+                {% if claim.approved_amount %}
+                <p><strong>Approved Amount:</strong> ₹{{ claim.approved_amount }}</p>
+                {% endif %}
+                {% if claim.rejection_reason %}
+                <p><strong>Rejection Reason:</strong> {{ claim.rejection_reason }}</p>
+                {% endif %}
+                {% if claim.assignee %}
+                <p><strong>Assigned To:</strong> {{ claim.assignee.first_name }} {{ claim.assignee.last_name }}</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h5>Description</h5>
+            </div>
+            <div class="card-body">
+                <p>{{ claim.description }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
